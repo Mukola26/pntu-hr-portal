@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR-PORTAL: Полтавська політехніка</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery UI CSS -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --pntu-blue: #2c3e50;
+            --pntu-accent: #3498db;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        /* ── FLEXBOX: Навігація ─────────────────────────── */
+        header {
+            background: var(--pntu-blue);
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+            margin: 0;
+            padding: 0;
+        }
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover { color: var(--pntu-accent); }
+
+        /* ── СЛАЙДЕР ────────────────────────────────────── */
+        .carousel-item img {
+            height: 550px;
+            object-fit: cover;
+            filter: brightness(75%);
+        }
+        .carousel-caption {
+            background: rgba(0,0,0,0.5);
+            border-radius: 15px;
+            padding: 2rem;
+            bottom: 20%;
+        }
+
+        /* ── GRID: Галерея ──────────────────────────────── */
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 2rem 0;
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 12px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+        .gallery-item img:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+        }
+
+        /* ── FLEXBOX: Новини ────────────────────────────── */
+        .news-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .news-item {
+            display: flex;
+            align-items: center;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 6px solid var(--pntu-accent);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+        .news-item:hover { transform: translateX(5px); }
+        .news-date {
+            font-weight: bold;
+            color: var(--pntu-accent);
+            min-width: 115px;
+        }
+
+        /* ── jQuery UI Accordion (Про сайт) ─────────────── */
+        #about-accordion {
+            margin-top: 1rem;
+        }
+        #about-accordion .ui-accordion-header {
+            background: var(--pntu-blue);
+            color: white;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        #about-accordion .ui-accordion-content {
+            border-radius: 0 0 8px 8px;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        /* ── jQuery UI Tabs (Галерея) ───────────────────── */
+        #gallery-tabs {
+            border: none;
+            background: transparent;
+        }
+        #gallery-tabs .ui-tabs-nav {
+            background: transparent;
+            border: none;
+            margin-bottom: 1rem;
+        }
+        #gallery-tabs .ui-tabs-nav li a {
+            font-size: 0.95rem;
+        }
+
+        /* ── МЕДІАЗАПИТИ (адаптивність) ─────────────────── */
+        @media (max-width: 768px) {
+            .header-container { flex-direction: column; gap: 15px; }
+            .carousel-item img { height: 300px; }
+            .news-item { flex-direction: column; align-items: flex-start; gap: 5px; }
+            .carousel-caption h1 { font-size: 1.4rem; }
+            .carousel-caption p  { font-size: 0.9rem; }
+        }
+        @media (max-width: 480px) {
+            .gallery-container { grid-template-columns: 1fr; }
+            .nav-links { gap: 12px; flex-wrap: wrap; justify-content: center; }
+        }
+
+        /* ── Футер ──────────────────────────────────────── */
+        footer {
+            background: var(--pntu-blue);
+            color: #bdc3c7;
+            padding: 3rem 0;
+            margin-top: 4rem;
+        }
+
+        /* ── Кнопка "вгору" ─────────────────────────────── */
+        #btn-top {
+            display: none;
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 999;
+            background: var(--pntu-accent);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            transition: background 0.3s;
+        }
+        #btn-top:hover { background: var(--pntu-blue); }
+    </style>
+</head>
+<body>
+
+<!-- ══════════════════ ШАПКА / HEADER ══════════════════ -->
+<header>
+    <div class="container header-container">
+        <div class="logo h3 m-0">ПНТУ <span class="text-info">HR</span></div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="#about">Про сайт</a></li>
+                <li><a href="#gallery">Галерея</a></li>
+                <li><a href="#news">Новини</a></li>
+                <li><a href="#contacts">Контакти</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<!-- ══════════════════ СЛАЙДЕР ══════════════════════════ -->
+<div id="heroSlider" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#heroSlider" data-bs-slide-to="0" class="active"></button>
+        <button type="button" data-bs-target="#heroSlider" data-bs-slide-to="1"></button>
+        <button type="button" data-bs-target="#heroSlider" data-bs-slide-to="2"></button>
+    </div>
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="image_2.jpg" class="d-block w-100" alt="ПНТУ Фасад">
+            <div class="carousel-caption">
+                <h1>Національний університет</h1>
+                <p>Полтавська політехніка імені Юрія Кондратюка</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img src="image_3.jpg" class="d-block w-100" alt="Вхід до університету">
+            <div class="carousel-caption">
+                <h1>HR-Портал</h1>
+                <p>Цифрові рішення для управління людськими ресурсами</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img src="image_4.jpg" class="d-block w-100" alt="Корпус університету">
+            <div class="carousel-caption">
+                <h1>Відділ кадрів</h1>
+                <p>Автоматизація кадрового обліку університету</p>
+            </div>
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#heroSlider" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#heroSlider" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+    </button>
+</div>
+
+<!-- ══════════════════ ГОЛОВНИЙ КОНТЕНТ ═════════════════ -->
+<main class="container my-5">
+
+    <!-- ── ПРО САЙТ (jQuery UI Accordion) ── -->
+    <section id="about" class="row align-items-center mb-5">
+        <div class="col-lg-6">
+            <h2 class="mb-4">Про інформаційний портал</h2>
+            <!-- jQuery UI Accordion -->
+            <div id="about-accordion">
+                <h3>Призначення порталу</h3>
+                <div>
+                    <p>Ця сторінка розроблена в рамках РГР з дисципліни "Web-технології".</p>
+                    <p>Портал призначений для автоматизації кадрового обліку, публікації актуальних новин університету та забезпечення швидкого доступу до контактної інформації структурних підрозділів.</p>
+                </div>
+                <h3>Технології розробки</h3>
+                <div>
+                    <p>Сайт розроблено з використанням: <strong>HTML5, CSS3, JavaScript, jQuery, jQuery UI, Bootstrap 5</strong>.</p>
+                    <p>Застосовано сучасні підходи: Flexbox, Grid Layout, медіазапити для адаптивності.</p>
+                </div>
+                <h3>Про університет</h3>
+                <div>
+                    <p>Національний університет «Полтавська політехніка» імені Юрія Кондратюка — провідний технічний заклад вищої освіти Полтавської області.</p>
+                    <p>Понад 8 000 студентів, 6 інститутів, 30+ кафедр.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 mt-4 mt-lg-0">
+            <img src="image_4.jpg" class="img-fluid rounded shadow-lg" alt="Головний корпус">
+        </div>
+    </section>
+
+    <!-- ── ГАЛЕРЕЯ (jQuery UI Tabs) ── -->
+    <section id="gallery" class="my-5">
+        <h2 class="text-center mb-4">Фотогалерея університету</h2>
+        <!-- jQuery UI Tabs -->
+        <div id="gallery-tabs">
+            <ul>
+                <li><a href="#tab-all">Всі фото</a></li>
+                <li><a href="#tab-corp">Корпуси</a></li>
+                <li><a href="#tab-nature">Територія</a></li>
+            </ul>
+            <div id="tab-all">
+                <div class="gallery-container">
+                    <div class="gallery-item"><img src="image_1.jpg" alt="Вид зверху" title="Вид зверху на університет"></div>
+                    <div class="gallery-item"><img src="image_2.jpg" alt="Панорама корпуса" title="Головний корпус — панорама"></div>
+                    <div class="gallery-item"><img src="image_4.jpg" alt="Центральний вхід" title="Центральний вхід"></div>
+                </div>
+            </div>
+            <div id="tab-corp">
+                <div class="gallery-container">
+                    <div class="gallery-item"><img src="image_2.jpg" alt="Головний корпус" title="Головний корпус"></div>
+                    <div class="gallery-item"><img src="image_4.jpg" alt="Другий корпус" title="Другий корпус"></div>
+                </div>
+            </div>
+            <div id="tab-nature">
+                <div class="gallery-container">
+                    <div class="gallery-item"><img src="image_1.jpg" alt="Територія" title="Територія університету"></div>
+                    <div class="gallery-item"><img src="image_3.jpg" alt="Парк" title="Університетська алея"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── НОВИНИ ── -->
+    <section id="news" class="my-5">
+        <h2 class="mb-4">10 Останніх новин</h2>
+        <div class="news-list" id="newsList">
+            <div class="news-item"><span class="news-date">04.04.2026</span><div><strong>Новий графік відпусток:</strong> Затверджено план на літній період 2026 року.</div></div>
+            <div class="news-item"><span class="news-date">03.04.2026</span><div><strong>Вчена рада:</strong> Обговорення стратегії цифровізації університету.</div></div>
+            <div class="news-item"><span class="news-date">02.04.2026</span><div><strong>Магістратура:</strong> Відкрито реєстрацію на вступні іспити.</div></div>
+            <div class="news-item"><span class="news-date">01.04.2026</span><div><strong>Вебінар:</strong> Сучасні тренди в HR-технологіях для освітян.</div></div>
+            <div class="news-item"><span class="news-date">30.03.2026</span><div><strong>Оновлення бази:</strong> Просимо співробітників актуалізувати дані в ЄДЕБО.</div></div>
+            <div class="news-item"><span class="news-date">28.03.2026</span><div><strong>Спорт:</strong> Відбулися змагання серед факультетів у спорткомплексі.</div></div>
+            <div class="news-item"><span class="news-date">25.03.2026</span><div><strong>Ремонт:</strong> Оновлено навчальні аудиторії у 3-му корпусі.</div></div>
+            <div class="news-item"><span class="news-date">20.03.2026</span><div><strong>Вакансії:</strong> Відкрито конкурс на посаду системного адміністратора.</div></div>
+            <div class="news-item"><span class="news-date">15.03.2026</span><div><strong>Студентство:</strong> Проведено тренінг з лідерства для активу ПНТУ.</div></div>
+            <div class="news-item"><span class="news-date">10.03.2026</span><div><strong>Виставка:</strong> Наукові досягнення Полтавської політехніки презентовано у Києві.</div></div>
+        </div>
+    </section>
+
+    <!-- ── КОНТАКТИ + КАРТА ── -->
+    <section id="contacts" class="row mt-5 g-4">
+        <h2 class="col-12 text-center mb-2">Контакти та розташування</h2>
+        <div class="col-md-5">
+            <div class="p-4 bg-white rounded shadow-sm border-top border-primary border-4 h-100">
+                <p><strong>Адреса:</strong> проспект Віталія Грицаєнка, 24, Полтава</p>
+                <p><strong>Телефон:</strong> +38 (0532) 56-16-04</p>
+                <p><strong>Email:</strong> post@nupp.edu.ua</p>
+                <hr>
+                <p class="text-muted small">Виконав: <strong>Грець Микола Миколайович</strong></p>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div class="rounded overflow-hidden shadow" style="height: 350px;">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2586.8291410189493!2d34.5656248!3d49.5742383!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40d82f64cd0cbd85%3A0x528a08266c1d4938!2z0J3QsNGG0ZbQvtC90LDQu9GM0L3QuNC5INGD0L3RltCy0LXRgNGB0LjRgtC10YIgwqvQn9C-0LvRgtCw0LLRgdGM0LrQsCDQv9C_0LvRltGC0LXRhdC90ZbQutCwINGW0LzQtdC90Zkg0K7RgNGW0Y8g0JrQvtC90LTRgNCw0YLRjtC60LDCuw!5e0!3m2!1suk!2sua!4v1712250000000!5m2!1suk!2sua"
+                    width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy">
+                </iframe>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<!-- ══════════════════ ФУТЕР ════════════════════════════ -->
+<footer class="text-center">
+    <div class="container">
+        <p class="m-0">© 2026 Національний університет «Полтавська політехніка імені Юрія Кондратюка»</p>
+        <p class="small mt-1">РГР з дисципліни "Web-технології"</p>
+    </div>
+</footer>
+
+<!-- Кнопка "Вгору" -->
+<button id="btn-top" title="На початок">&#8679;</button>
+
+<!-- ══════════════════ СКРИПТИ ══════════════════════════ -->
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<!-- jQuery UI -->
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+$(document).ready(function () {
+
+    // ── 1. jQuery UI Accordion (секція "Про сайт") ──────
+    $("#about-accordion").accordion({
+        heightStyle: "content",
+        collapsible: true,
+        animate: 300
+    });
+
+    // ── 2. jQuery UI Tabs (Галерея) ─────────────────────
+    $("#gallery-tabs").tabs({
+        hide: { effect: "fadeOut", duration: 200 },
+        show: { effect: "fadeIn", duration: 200 }
+    });
+
+    // ── 3. jQuery UI Tooltip (підказки на фото) ─────────
+    $(".gallery-item img").tooltip({
+        position: { my: "center bottom", at: "center top-10" }
+    });
+
+    // ── 4. jQuery: анімована поява новин ────────────────
+    $("#newsList .news-item").hide().each(function (i) {
+        $(this).delay(i * 120).fadeIn(400);
+    });
+
+    // ── 5. jQuery: плавний скрол по меню ────────────────
+    $(".nav-links a").on("click", function (e) {
+        var target = $(this).attr("href");
+        if ($(target).length) {
+            e.preventDefault();
+            $("html, body").animate({
+                scrollTop: $(target).offset().top - 70
+            }, 600);
+        }
+    });
+
+    // ── 6. jQuery: кнопка "вгору" ────────────────────────
+    $(window).on("scroll", function () {
+        if ($(this).scrollTop() > 300) {
+            $("#btn-top").fadeIn(300);
+        } else {
+            $("#btn-top").fadeOut(300);
+        }
+    });
+    $("#btn-top").on("click", function () {
+        $("html, body").animate({ scrollTop: 0 }, 500);
+    });
+
+    // ── 7. jQuery UI Draggable на картці контактів ───────
+    $(".col-md-5 > div").draggable({ containment: "parent", opacity: 0.85 });
+
+});
+</script>
+
+</body>
+</html>
